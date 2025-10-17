@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Did You Vote Trump? | Share Your Voice</title>
+    <link href="/css/output.css" rel="stylesheet">
+    <%- include('partials/_ga') %>
+    <%- include('partials/_seo') %>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <style>
+        .patriotic-bg {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Cpath d='M160,120 C180,110 220,115 240,110 C260,105 280,100 300,105 C320,110 340,115 360,110 C380,105 400,100 420,105 C440,110 460,115 480,110 C500,105 520,100 540,105 C560,110 580,115 600,110 C620,105 640,100 660,105' fill='none' stroke='%23E31837' stroke-width='2' stroke-opacity='0.1'/%3E%3Cg fill='%231B4B9B' fill-opacity='0.1'%3E%3Ccircle cx='200' cy='80' r='4'/%3E%3Ccircle cx='300' cy='60' r='4'/%3E%3Ccircle cx='400' cy='70' r='4'/%3E%3Ccircle cx='500' cy='65' r='4'/%3E%3Ccircle cx='600' cy='75' r='4'/%3E%3Ccircle cx='250' cy='90' r='4'/%3E%3Ccircle cx='350' cy='85' r='4'/%3E%3Ccircle cx='450' cy='95' r='4'/%3E%3Ccircle cx='550' cy='80' r='4'/%3E%3C/g%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+        .star-bullet::before {
+            content: "★";
+            color: #E31837;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50 relative">
+    
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent"></div>
+    </div>
+    
+    <!-- Header Section -->
+    <header class="bg-white relative overflow-hidden border-b border-gray-200">
+        <div class="absolute inset-0 patriotic-bg opacity-20"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-white/0 to-white"></div>
+        
+        <div class="container relative mx-auto px-4 py-12 md:py-16 text-center">
+         
+         
+            
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">
+                🇺🇸 Why Did You Vote <span class="text-primary-500">Trump</span>?
+            </h1>
+            <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+                Share your voice. Every vote has a story.
+            </p>
+        </div>
+    </header>
+
+   <!-- Main Content -->
+<main class="container mx-auto px-4 py-8 md:py-12 max-w-3xl relative">
+    <!-- Patriotic Background -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden" style="z-index: -1;">
+        <svg class="absolute w-full h-full opacity-[0.04]" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+            <!-- Large Stars -->
+            <g fill="#1B4B9B">
+                <% for(let i = 0; i < 50; i++) { %>
+                    <path d="M<%=Math.random()*1000%> <%=Math.random()*1000%> l-5,-15l-15,-5l15,-5l5,-15l5,15l15,5l-15,5z" />
+                <% } %>
+            </g>
+            
+            <!-- Broad Wavy Stripes -->
+            <g stroke="#E31837" stroke-width="2" fill="none" opacity="0.1">
+                <% for(let i = 0; i < 8; i++) { %>
+                    <path d="M0,<%=100 + i*120%> 
+                           C250,<%=80 + i*120%> 
+                           750,<%=120 + i*120%> 
+                           1000,<%=100 + i*120%>" />
+                <% } %>
+            </g>
+        </svg>
+    </div>
+
+    <!-- Form Section -->
+    <section id="formSection" class="mb-12 relative">
+        <% if (isUS) { %>
+            <%- include('partials/_submission_form') %>
+        <% } else { %>
+            <%- include('partials/_non_us_message') %>
+        <% } %>
+    </section>
+
+    <!-- Stories Section -->
+    <section class="relative">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Recent Stories</h2>
+            <div class="text-sm text-gray-500">
+                Showing <%= posts.length %> stories
+            </div>
+        </div>
+
+        <% if (posts.length === 0) { %>
+            <div class="bg-white rounded-lg shadow-md p-12 text-center">
+                <div class="text-lg text-gray-500">Be the first to share your story!</div>
+            </div>
+        <% } else { %>
+            <div class="space-y-6">
+                <% posts.forEach(post => { %>
+                    <%- include('partials/_post_card', { post }) %>
+                <% }) %>
+            </div>
+        <% } %>
+    </section>
+</main>
+
+    <!-- Footer Section -->
+    <footer class="bg-white border-t border-gray-200 mt-8 md:mt-16">
+        <div class="container mx-auto px-4 py-8 text-center">
+            <div class="flex items-center justify-center space-x-2 mb-4">
+                <span class="w-8 h-0.5 bg-primary-500"></span>
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#E31837"/>
+                </svg>
+                <span class="w-8 h-0.5 bg-primary-500"></span>
+            </div>
+            <p class="text-gray-600">Every vote matters. Every story counts.</p>
+            <div class="mt-4 text-sm text-gray-500">
+                © <%= new Date().getFullYear() %> Why Did You Vote
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/form_validation.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: ${NODE_ENV:-development}
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${PORT}
+      - HOST=${HOST}
+      - HA_BASE_URL=${HA_BASE_URL}
+      - WEBHOOK_ID=${WEBHOOK_ID}
+      - PERSPECTIVE_API_KEY=${PERSPECTIVE_API_KEY}
+
+    volumes:
+      - .:/usr/src/app
+      - ./data:/usr/src/app/data
+      - /usr/src/app/node_modules
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${PORT}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

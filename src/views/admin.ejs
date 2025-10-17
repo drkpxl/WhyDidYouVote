@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Why Did You Vote Trump?</title>
+    <link href="/css/output.css" rel="stylesheet">
+    <%- include('partials/_ga') %>
+</head>
+<body class="min-h-screen bg-gray-50 relative">
+    <!-- Patriotic Background -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden" style="z-index: -1;">
+        <svg class="absolute w-full h-full opacity-[0.04]" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+            <!-- Stars -->
+            <g fill="#1B4B9B">
+                <% for(let i = 0; i < 50; i++) { %>
+                    <path d="M<%=Math.random()*1000%> <%=Math.random()*1000%> l-5,-15l-15,-5l15,-5l5,-15l5,15l15,5l-15,5z" />
+                <% } %>
+            </g>
+            
+            <!-- Wavy Stripes -->
+            <g stroke="#E31837" stroke-width="2" fill="none" opacity="0.1">
+                <% for(let i = 0; i < 8; i++) { %>
+                    <path d="M0,<%=100 + i*120%> 
+                           C250,<%=80 + i*120%> 
+                           750,<%=120 + i*120%> 
+                           1000,<%=100 + i*120%>" />
+                <% } %>
+            </g>
+        </svg>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200 relative overflow-hidden">
+        <div class="absolute inset-0 patriotic-bg opacity-20"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-white/0 to-white"></div>
+        <div class="container relative mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Admin Panel</h1>
+                    <p class="text-gray-600 mt-1">Manage and moderate submitted stories</p>
+                </div>
+                <a href="/" class="text-primary-500 hover:text-primary-600 font-medium flex items-center">
+                    <svg class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Site
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                <div class="text-sm text-gray-600">Total Posts</div>
+                <div class="text-2xl font-bold text-gray-900"><%= totalCounts.all %></div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                <div class="text-sm text-gray-600">Pending Review</div>
+                <div class="text-2xl font-bold text-primary-500"><%= totalCounts.pending %></div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                <div class="text-sm text-gray-600">Approved</div>
+                <div class="text-2xl font-bold text-green-600"><%= totalCounts.approved %></div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                <div class="text-sm text-gray-600">Rejected</div>
+                <div class="text-2xl font-bold text-red-600"><%= totalCounts.rejected %></div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="flex gap-2 mb-6 bg-white p-2 rounded-lg shadow-sm border border-gray-200">
+            <a href="/admin" 
+               class="px-4 py-2 rounded-md text-sm font-medium <%= !status ? 'bg-primary-500 text-white' : 'text-gray-600 hover:bg-gray-100' %>">
+               All (<%= totalCounts.all %>)
+            </a>
+            <a href="/admin?status=pending" 
+               class="px-4 py-2 rounded-md text-sm font-medium <%= status === 'pending' ? 'bg-primary-500 text-white' : 'text-gray-600 hover:bg-gray-100' %>">
+               Pending (<%= totalCounts.pending %>)
+            </a>
+            <a href="/admin?status=approved" 
+               class="px-4 py-2 rounded-md text-sm font-medium <%= status === 'approved' ? 'bg-primary-500 text-white' : 'text-gray-600 hover:bg-gray-100' %>">
+               Approved (<%= totalCounts.approved %>)
+            </a>
+            <a href="/admin?status=rejected" 
+               class="px-4 py-2 rounded-md text-sm font-medium <%= status === 'rejected' ? 'bg-primary-500 text-white' : 'text-gray-600 hover:bg-gray-100' %>">
+               Rejected (<%= totalCounts.rejected %>)
+            </a>
+        </div>
+
+        <!-- Posts List -->
+        <div class="space-y-4">
+            <% posts.forEach(post => { %>
+                <article class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden relative">
+                    <!-- Status Badge -->
+                    <div class="absolute top-4 right-4 flex gap-2">
+                        <% if (post.moderation_status === 'pending') { %>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                Pending Review
+                            </span>
+                        <% } else if (post.moderation_status === 'approved') { %>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                Approved
+                            </span>
+                        <% } else if (post.moderation_status === 'rejected') { %>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                Rejected
+                            </span>
+                        <% } %>
+                        <% if (post.safety_score !== null) { %>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                Safety: <%= post.safety_score %>%
+                            </span>
+                        <% } %>
+                    </div>
+
+                    <div class="p-6">
+                        <!-- Content -->
+                        <div class="mb-4 pt-10">
+                            <p class="text-gray-900 "><%= post.reason %></p>
+                        </div>
+
+                        <!-- Metadata -->
+                        <div class="flex items-center justify-between text-sm text-gray-600 mb-4">
+                            <div class="flex items-center gap-4">
+                                <div>
+                                    <svg class="w-4 h-4 text-gray-400 inline mr-1" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                    </svg>
+                                    <% if (post.town && post.state) { %>
+                                        <%= post.town %>, <%= post.state %>
+                                    <% } else if (post.state) { %>
+                                        <%= post.state %>
+                                    <% } else { %>
+                                        <span class="italic">Location unknown</span>
+                                    <% } %>
+                                </div>
+                                <div>
+                                    <svg class="w-4 h-4 text-gray-400 inline mr-1" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
+                                    </svg>
+                                    <%= new Date(post.created_at).toLocaleString() %>
+                                </div>
+                                <div>
+                                    <svg class="w-4 h-4 text-gray-400 inline mr-1" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                                    </svg>
+                                    <%= post.ip_address %>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Moderation Scores -->
+                        <% if (post.scores) { %>
+                            <div class="border-t border-gray-100 pt-4">
+                                <h3 class="text-sm font-medium text-gray-900 mb-2">Content Analysis Scores</h3>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                    <% for (const [key, value] of Object.entries(post.scores)) { %>
+                                        <div class="space-y-1">
+                                            <div class="flex justify-between text-xs text-gray-600">
+                                                <span class="capitalize"><%= key.replace(/([A-Z])/g, ' $1').trim() %></span>
+                                                <span><%= Math.round(value * 100) %>%</span>
+                                            </div>
+                                            <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                                <div 
+                                                    class="h-full bg-primary-500 rounded-full"
+                                                    style="width: <%= Math.round(value * 100) %>%">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% } %>
+
+                        <!-- Action Buttons -->
+                        <div class="border-t border-gray-100 mt-4 pt-4 flex gap-2 justify-end">
+                            <% if (post.moderation_status !== 'approved') { %>
+                                <form action="/admin/posts/<%= post.id %>/approve" method="POST">
+                                    <button type="submit" 
+                                            class="px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors">
+                                        Approve
+                                    </button>
+                                </form>
+                            <% } %>
+
+                            <% if (post.moderation_status !== 'rejected') { %>
+                                <form action="/admin/posts/<%= post.id %>/reject" method="POST">
+                                    <button type="submit" 
+                                            class="px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors">
+                                        Reject
+                                    </button>
+                                </form>
+                            <% } %>
+
+                            <form action="/admin/posts/<%= post.id %>/delete" method="POST">
+                                <button type="submit" 
+                                        class="px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </article>
+            <% }) %>
+
+            <% if (posts.length === 0) { %>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+                    <div class="text-gray-500">No posts found matching the selected filter</div>
+                </div>
+            <% } %>
+        </div>
+    </main>
+
+
+</body>
+</html>

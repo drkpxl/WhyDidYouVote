@@ -1,0 +1,131 @@
+<section class="bg-white rounded-lg shadow-md border border-gray-200">
+    <div class="p-6 space-y-6" id="formContainer">
+        <!-- Error Message -->
+        <div id="submitError" class="hidden bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg">
+            <p id="errorMessage"></p>
+        </div>
+
+        <!-- Success Message -->
+        <div id="submitSuccess" class="hidden bg-green-50 border border-green-200 text-green-700 p-4 rounded-lg">
+            <p id="successMessage"></p>
+        </div>
+
+        <!-- Form Content -->
+        <form method="POST" action="/submit" class="space-y-6">
+            <!-- Rest of your existing form content stays the same -->
+            <div class="space-y-6">
+                <p class="text-base font-medium text-gray-700">
+                    The 2024 election was unlike any other. Trump won a resounding victory winning both the electoral (312) and popular vote (75MM). Share you story as to why you voted for Trump and what you want to see from his presidency.
+                </p>
+
+                <div class="w-full">
+                    <textarea
+                        name="reason"
+                        required
+                        minlength="150"
+                        rows="4"
+                        class="w-full min-h-[160px] p-3 text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition duration-200"
+                        placeholder="Share your story... (minimum 150 characters)"
+                        id="reasonText"
+                    ></textarea>
+                    <label class="text-sm text-gray-500" id="characterWarning">
+                        <span id="characterCount">0/150 characters minimum</span>
+                    </label>
+                </div>
+
+                <!-- Location Fields -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-700">
+                            Town (optional)
+                        </label>
+                        <input 
+                            type="text" 
+                            name="town" 
+                            class="w-full p-2 text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition duration-200" 
+                            placeholder="Your town"
+                            maxlength="50"
+                        >
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-700">
+                            State (optional)
+                        </label>
+                        <select 
+                            name="state" 
+                            class="w-full h-[42px] p-2 text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition duration-200 appearance-none cursor-pointer"
+                            style="background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3e%3cpolyline points=\'6 9 12 15 18 9\'%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 0.5rem center; background-size: 1.5em 1.5em; padding-right: 2.5rem;"
+                        >
+                            <!-- State options remain the same -->
+                            <option value="" selected>Select your state</option>
+                            <option value=“AL”>Alabama</option>
+            <option value=“AK”>Alaska</option>
+            <option value=“AZ”>Arizona</option>
+            <option value=“AR”>Arkansas</option>
+            <option value=“CA”>California</option>
+            <option value=“CO”>Colorado</option>
+            <option value=“CT”>Connecticut</option>
+            <option value=“DE”>Delaware</option>
+            <option value=“DC”>District of Columbia</option>
+            <option value=“FL”>Florida</option>
+            <option value=“GA”>Georgia</option>
+            <option value=“HI”>Hawaii</option>
+            <option value=“ID”>Idaho</option>
+            <option value=“IL”>Illinois</option>
+            <option value=“IN”>Indiana</option>
+            <option value=“IA”>Iowa</option>
+            <option value=“KS”>Kansas</option>
+            <option value=“KY”>Kentucky</option>
+            <option value=“LA”>Louisiana</option>
+            <option value=“ME”>Maine</option>
+            <option value=“MD”>Maryland</option>
+            <option value=“MA”>Massachusetts</option>
+            <option value=“MI”>Michigan</option>
+            <option value=“MN”>Minnesota</option>
+            <option value=“MS”>Mississippi</option>
+            <option value=“MO”>Missouri</option>
+            <option value=“MT”>Montana</option>
+            <option value=“NE”>Nebraska</option>
+            <option value=“NV”>Nevada</option>
+            <option value=“NH”>New Hampshire</option>
+            <option value=“NJ”>New Jersey</option>
+            <option value=“NM”>New Mexico</option>
+            <option value=“NY”>New York</option>
+            <option value=“NC”>North Carolina</option>
+            <option value=“ND”>North Dakota</option>
+            <option value=“OH”>Ohio</option>
+            <option value=“OK”>Oklahoma</option>
+            <option value=“OR”>Oregon</option>
+            <option value=“PA”>Pennsylvania</option>
+            <option value=“RI”>Rhode Island</option>
+            <option value=“SC”>South Carolina</option>
+            <option value=“SD”>South Dakota</option>
+            <option value=“TN”>Tennessee</option>
+            <option value=“TX”>Texas</option>
+            <option value=“UT”>Utah</option>
+            <option value=“VT”>Vermont</option>
+            <option value=“VA”>Virginia</option>
+            <option value=“WA”>Washington</option>
+            <option value=“WV”>West Virginia</option>
+            <option value=“WI”>Wisconsin</option>
+            <option value=“WY”>Wyoming</option>
+            <option value=“AS”>American Samoa</option>
+            <option value=“GU”>Guam</option>
+            <option value=“MP”>Northern Mariana Islands</option>
+            <option value=“PR”>Puerto Rico</option>
+            <option value=“VI”>U.S. Virgin Islands</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CAPTCHA and Submit -->
+            <div class="space-y-4">
+                <div class="cf-turnstile mx-auto" data-sitekey="<%- turnstileSiteKey %>" data-theme="light"></div>
+                <button type="submit" class="w-full bg-primary-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition duration-200">
+                    Tell Your Story
+                </button>
+            </div>
+        </form>
+    </div>
+</section>

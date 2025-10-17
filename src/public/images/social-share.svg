@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#ffffff"/>
+  
+  <!-- Decorative elements -->
+  <rect x="0" y="0" width="16" height="630" fill="#FF0000"/>
+  <rect x="1184" y="0" width="16" height="630" fill="#0000FF"/>
+  
+  <!-- Main text container with subtle background -->
+  <rect x="100" y="150" width="1000" height="330" fill="#f8f8f8" rx="8"/>
+  
+  <!-- Main title -->
+  <text x="600" y="250" 
+        font-family="Arial, sans-serif" 
+        font-size="72" 
+        font-weight="bold" 
+        text-anchor="middle" 
+        fill="#333333">
+    Why Did You Vote
+  </text>
+  
+  <!-- Trump text (larger and emphasized) -->
+  <text x="600" y="350" 
+        font-family="Arial, sans-serif" 
+        font-size="120" 
+        font-weight="900" 
+        text-anchor="middle" 
+        fill="#333333">
+    TRUMP?
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="600" y="420" 
+        font-family="Arial, sans-serif" 
+        font-size="36" 
+        font-weight="normal" 
+        text-anchor="middle" 
+        fill="#666666">
+    Share Your Voice
+  </text>
+  
+  <!-- URL at bottom -->
+  <text x="600" y="550" 
+        font-family="Arial, sans-serif" 
+        font-size="24" 
+        text-anchor="middle" 
+        fill="#888888">
+    www.whydidyouvotetrump.com
+  </text>
+  
+  <!-- Subtle corners -->
+  <path d="M0,0 L40,0 L40,40 L0,40 Z" fill="#FF0000"/>
+  <path d="M1160,0 L1200,0 L1200,40 L1160,40 Z" fill="#0000FF"/>
+  <path d="M0,590 L40,590 L40,630 L0,630 Z" fill="#FF0000"/>
+  <path d="M1160,590 L1200,590 L1200,630 L1160,630 Z" fill="#0000FF"/>
+</svg>
